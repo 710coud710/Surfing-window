@@ -1,0 +1,9 @@
+[November 21, 2025, 236 PM] darmsin 
+Hi Bro, customer want to sort ADL1 data, help to develop software to sort,
+INFO Mon 09:09:32.914 [test_secure_provision.py:673 ] get trim_mfg data: }--> tm trim_mfg
+              >>> 
+              >>> 
+              >>> <info> [00001447] current trim value: 
+              >>> mfg_data: 0x0A050000
+we need to compare "0x0A050000" is "0xFFFFFFFF" or not
+if yes, need to sort out those DSN, including HokI and Hapuka ADL1 all the ADL1 MP test log
