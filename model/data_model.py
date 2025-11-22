@@ -69,20 +69,18 @@ class DataModel:
             if not has_mp_program:
                 return None
             
-            # Step 2: Check for mfg_data line
-            has_mfg_line = False
+            # Step 2: Check for mfg_data line with 0xFFFFFFFF (ONLY Invalid)
             is_invalid = False
             
             for i, line in enumerate(lines):
                 if self.mfg_keyword in line:
-                    has_mfg_line = True
-                    # Check if this line contains 0xFFFFFFFF (invalid)
+                    # ONLY catch if this line contains 0xFFFFFFFF (invalid)
                     if self.invalid_mfg in line:
                         is_invalid = True
-                    break
+                        break
             
-            # If no mfg_data line found, skip
-            if not has_mfg_line:
+            # If not invalid (0xFFFFFFFF), skip this file
+            if not is_invalid:
                 return None
             
             # Step 3: Extract serial number
