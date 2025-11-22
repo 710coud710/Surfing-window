@@ -50,6 +50,7 @@ class SidebarWidget(QWidget):
         
         # Logo/Title section
         title_label = QLabel("Surfing")
+        
         title_label.setAlignment(Qt.AlignCenter)
         font = QFont()
         font.setPointSize(18)

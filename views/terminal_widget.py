@@ -80,7 +80,7 @@ class TerminalWidget(QWidget):
     def log_info(self, message: str):
         """Log an info message"""
         self._append_message(f"[INFO] {message}", "#4a90e2")
-        
+
     def log_success(self, message: str):
         """Log a success message"""
         self._append_message(f"[SUCCESS] {message}", "#27ae60")

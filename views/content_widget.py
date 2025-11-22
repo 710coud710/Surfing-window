@@ -91,21 +91,7 @@ class ContentWidget(QWidget):
         
         layout = QVBoxLayout(self)
         layout.setContentsMargins(15, 15, 15, 15)
-        layout.setSpacing(20)
-        
-        # Welcome section
-        welcome_label = QLabel("Welcome to ADL1 Data Sorting Tool")
-        welcome_font = QFont()
-        welcome_font.setPointSize(18)
-        welcome_font.setBold(True)
-        welcome_label.setFont(welcome_font)
-        welcome_label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(welcome_label)
-        
-        desc_label = QLabel("Select a folder containing log files and choose your filter options")
-        desc_label.setAlignment(Qt.AlignCenter)
-        desc_label.setStyleSheet("color: #7f8c8d; font-size: 13px; margin-bottom: 20px;")
-        layout.addWidget(desc_label)
+        layout.setSpacing(20)       
         
         # Folder selection group
         folder_group = QGroupBox("📁 Folder Selection")
