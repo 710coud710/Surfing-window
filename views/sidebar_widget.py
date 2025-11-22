@@ -55,43 +55,45 @@ class SidebarWidget(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         
+        """_________________LOGO_________________"""
         # Logo/Title section with modern design
         logo_container = QWidget()
-        # logo_container.setStyleSheet("""
-        #     QWidget {
-        #         background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-        #                                    stop:0 #1abc9c, stop:1 #16a085);
-        #         padding: 20px;
-        #     }
-        # """)
+        logo_container.setStyleSheet("""
+            QWidget {
+                background: gradient(x1:0, y1:0, x2:1, y2:1,
+                                   stop:0 #1e3c72, stop:1 #2a5298);
+            }
+        """)
         logo_layout = QHBoxLayout(logo_container)
-        logo_layout.setContentsMargins(15, 20, 15, 20)
-        logo_layout.setSpacing(10)
         
+        logo_layout.setContentsMargins(15, 10, 15, 10)
+        logo_layout.setSpacing(10)
         # Logo icon
         logo_icon = QLabel()
-        logo_pixmap = QPixmap("assets/images/surfing2.png")
-        logo_icon.setPixmap(logo_pixmap.scaled(62, 62, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        logo_icon.setFixedSize(62, 62)
+        logo_pixmap = QPixmap("assets/images/surfing3.png")
+        logo_icon.setPixmap(logo_pixmap.scaled(82, 82, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        logo_icon.setStyleSheet("background: transparent;")
+        logo_icon.setFixedSize(82, 82)
         logo_layout.addWidget(logo_icon)
         
         # Title text
         title_label = QLabel("Surfing")
         title_font = QFont()
-        title_font.setPointSize(18)
+        title_font.setPointSize(20)
         title_font.setBold(True)    
         title_font.setFamily("Segoe UI")
         title_label.setFont(title_font)
-        title_label.setStyleSheet("color: white; background: transparent;")
+        title_label.setStyleSheet("color: #ffffff; background: transparent;")
         logo_layout.addWidget(title_label)
         
         logo_layout.addStretch()
         layout.addWidget(logo_container)
         
+        """______________MENu________________"""
         # Separator with gradient
         separator = QFrame()
         separator.setFrameShape(QFrame.HLine)
-        separator.setFixedHeight(2)
+        separator.setFixedHeight(1)
         separator.setStyleSheet("""
             background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
                                        stop:0 transparent, 
@@ -101,7 +103,7 @@ class SidebarWidget(QWidget):
         layout.addWidget(separator)
         
         # Add spacing before menu
-        layout.addSpacing(15)
+        layout.addSpacing(5)
         
         # Menu section label
         menu_label = QLabel("MENU")

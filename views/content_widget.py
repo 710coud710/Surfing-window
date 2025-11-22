@@ -134,21 +134,6 @@ class ContentWidget(QWidget):
         filter_group.setLayout(filter_layout)
         layout.addWidget(filter_group)
         
-        # Keywords info group
-        info_group = QGroupBox("ℹ️ Search Keywords")
-        info_layout = QVBoxLayout()
-        
-        info_text = QLabel(
-            "• Looking for: mfg_data: 0x0A050000\n"
-            "• Invalid when: 0xFFFFFFFF\n"
-            "• Extracts: PCBA SN No"
-        )
-        info_text.setStyleSheet("color: #7f8c8d; font-size: 12px; padding: 5px;")
-        info_layout.addWidget(info_text)
-        
-        info_group.setLayout(info_layout)
-        layout.addWidget(info_group)
-        
         layout.addStretch()
         
         # Process button
