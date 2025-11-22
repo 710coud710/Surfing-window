@@ -89,8 +89,8 @@ class ResultWidget(QWidget):
         
         # Table
         self.table = QTableWidget()
-        self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["#", "File Name", "Serial Number", "Status"])
+        self.table.setColumnCount(5)
+        self.table.setHorizontalHeaderLabels(["#", "File Name", "Serial Number", "Status", "Check Time"])
         
         # Configure table
         header = self.table.horizontalHeader()
@@ -98,9 +98,11 @@ class ResultWidget(QWidget):
         header.setSectionResizeMode(1, QHeaderView.Stretch)
         header.setSectionResizeMode(2, QHeaderView.Stretch)
         header.setSectionResizeMode(3, QHeaderView.Fixed)
+        header.setSectionResizeMode(4, QHeaderView.Fixed)
         
         self.table.setColumnWidth(0, 60)
         self.table.setColumnWidth(3, 120)
+        self.table.setColumnWidth(4, 160)
         
         self.table.setAlternatingRowColors(True)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)
@@ -111,11 +113,11 @@ class ResultWidget(QWidget):
     def set_results(self, results: list):
         """
         Set the results to display
-        results: List of (filename, serial_number, is_invalid)
+        results: List of (filename, serial_number, is_invalid, check_time)
         """
         self.table.setRowCount(0)
         
-        for idx, (filename, sn, is_invalid) in enumerate(results, 1):
+        for idx, (filename, sn, is_invalid, check_time) in enumerate(results, 1):
             row = self.table.rowCount()
             self.table.insertRow(row)
             
@@ -143,6 +145,11 @@ class ResultWidget(QWidget):
                 status_item.setForeground(QColor("#27ae60"))
                 
             self.table.setItem(row, 3, status_item)
+            
+            # Check Time
+            time_item = QTableWidgetItem(check_time)
+            time_item.setTextAlignment(Qt.AlignCenter)
+            self.table.setItem(row, 4, time_item)
         
     def update_statistics(self, stats: dict):
         """Update statistics display"""

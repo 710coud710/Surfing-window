@@ -3,23 +3,26 @@ Data Model - Handles business logic and data processing
 """
 from pathlib import Path
 from typing import List, Tuple, Optional
+from datetime import datetime
+import re
 
 
 class DataModel:
     """Model for processing log files and extracting data"""
     
     def __init__(self):
-        self.mfg_keyword = "mfg_data: 0x0A050000"
+        self.mfg_keyword = "mfg_data:"
         self.invalid_mfg = "0xFFFFFFFF"
         self.sn_keyword = "PCBA SN No          :"
+        self.test_program_keyword = "Test Program        :"
         self.total_files = 0
         self.processed_files = 0
         self.found_items = []
         
-    def process_folder(self, folder_path: str) -> List[Tuple[str, str, bool]]:
+    def process_folder(self, folder_path: str) -> List[Tuple[str, str, bool, str]]:
         """
         Process all files in a folder
-        Returns: List of (filename, serial_number, is_invalid)
+        Returns: List of (filename, serial_number, is_invalid, check_time)
         """
         results = []
         folder = Path(folder_path)
@@ -40,28 +43,59 @@ class DataModel:
         self.found_items = results
         return results
     
-    def _process_file(self, file_path: Path) -> Optional[Tuple[str, str, bool]]:
+    def _process_file(self, file_path: Path) -> Optional[Tuple[str, str, bool, str]]:
         """
         Process a single file
-        Returns: (filename, serial_number, is_invalid) or None
+        Returns: (filename, serial_number, is_invalid, check_time) or None
         """
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 lines = f.readlines()
-                
-            # Check for mfg_keyword
-            has_mfg_keyword = any(self.mfg_keyword in line for line in lines)
-            if not has_mfg_keyword:
+            
+            # Step 1: Check if file has "MP" in Test Program
+            has_mp_program = False
+            for line in lines:
+                if self.test_program_keyword in line:
+                    # Extract test program name
+                    program_name = line.split(":")[-1].strip()
+                    # Check if "MP" is after 2nd underscore
+                    # Example: Hapuka_ADL1_MP_V1.1.csv
+                    parts = program_name.split("_")
+                    if len(parts) >= 3 and parts[2].startswith("MP"):
+                        has_mp_program = True
+                        break
+            
+            # If no MP program, skip this file
+            if not has_mp_program:
                 return None
             
-            # Check if it's invalid (0xFFFFFFFF)
-            has_invalid_mfg = any(self.invalid_mfg in line for line in lines)
+            # Step 2: Check for mfg_data line
+            has_mfg_line = False
+            is_invalid = False
             
-            # Extract serial number
+            for i, line in enumerate(lines):
+                if self.mfg_keyword in line:
+                    has_mfg_line = True
+                    # Check if this line contains 0xFFFFFFFF (invalid)
+                    if self.invalid_mfg in line:
+                        is_invalid = True
+                    break
+            
+            # If no mfg_data line found, skip
+            if not has_mfg_line:
+                return None
+            
+            # Step 3: Extract serial number
+            serial_number = "N/A"
             for line in lines:
                 if self.sn_keyword in line:
-                    sn = line.split(":")[-1].strip()
-                    return (file_path.name, sn, has_invalid_mfg)
+                    serial_number = line.split(":")[-1].strip()
+                    break
+            
+            # Step 4: Get check time (current time)
+            check_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            return (file_path.name, serial_number, is_invalid, check_time)
                     
         except Exception as e:
             print(f"Error reading file {file_path}: {e}")
@@ -80,7 +114,7 @@ class DataModel:
     def get_statistics(self) -> dict:
         """Get statistics about processed data"""
         total = len(self.found_items)
-        invalid = sum(1 for _, _, is_invalid in self.found_items if is_invalid)
+        invalid = sum(1 for _, _, is_invalid, _ in self.found_items if is_invalid)
         valid = total - invalid
         
         return {

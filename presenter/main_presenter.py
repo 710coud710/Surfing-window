@@ -155,10 +155,10 @@ class MainPresenter(QObject):
             writer = csv.writer(csvfile)
             
             # Write header
-            writer.writerow(['#', 'File Name', 'Serial Number', 'Status'])
+            writer.writerow(['#', 'File Name', 'Serial Number', 'Status', 'Check Time'])
             
             # Write data
-            for idx, (filename, sn, is_invalid) in enumerate(results, 1):
+            for idx, (filename, sn, is_invalid, check_time) in enumerate(results, 1):
                 status = 'Invalid' if is_invalid else 'Valid'
-                writer.writerow([idx, filename, sn, status])
+                writer.writerow([idx, filename, sn, status, check_time])
 
