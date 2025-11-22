@@ -150,15 +150,22 @@ class ContentWidget(QWidget):
         layout.addLayout(process_btn_layout)
         
     def _browse_folder(self):
-        """Open folder browser dialog"""
-        folder = QFileDialog.getExistingDirectory(
-            self,
-            "Select Folder",
-            "",
-            QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks
-        )
-        if folder:
+        dialog = QFileDialog(self)
+        dialog.setWindowTitle("Select Folder")
+        dialog.setFileMode(QFileDialog.Directory)
+        dialog.setOption(QFileDialog.ShowDirsOnly, True)
+
+        # 🔥 Quan trọng: tắt native dialog
+        dialog.setOption(QFileDialog.DontUseNativeDialog, True)
+
+        # 🔥 Bây giờ resize mới có tác dụng
+        dialog.resize(700, 500)
+
+        if dialog.exec():
+            folder = dialog.selectedFiles()[0]
             self.folder_input.setText(folder)
+
+
             
     def _on_process_clicked(self):
         """Handle process button click"""

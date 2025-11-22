@@ -70,7 +70,7 @@ class SidebarWidget(QWidget):
         logo_layout.setSpacing(10)
         # Logo icon
         logo_icon = QLabel()
-        logo_pixmap = QPixmap("assets/images/surfing3.png")
+        logo_pixmap = QPixmap("assets/images/surfing.png")
         logo_icon.setPixmap(logo_pixmap.scaled(82, 82, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         logo_icon.setStyleSheet("background: transparent;")
         logo_icon.setFixedSize(82, 82)
