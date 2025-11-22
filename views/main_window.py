@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         
     def setup_ui(self):
         """Setup the main window UI"""
-        self.setWindowTitle("Surfing - Pro Program Data Sorting")
+        self.setWindowTitle("Surfing - Pro Program Data Sorting | Version 1.0.0 Early Access Version (Beta)")
         self.setMinimumSize(1200, 800)
         
         # Main widget and layout

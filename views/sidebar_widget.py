@@ -83,7 +83,7 @@ class SidebarWidget(QWidget):
         title_font.setBold(True)    
         title_font.setFamily("Segoe UI")
         title_label.setFont(title_font)
-        title_label.setStyleSheet("color: #ffffff; background: transparent;")
+        title_label.setStyleSheet("color: #27548A; background: transparent;")
         logo_layout.addWidget(title_label)
         
         logo_layout.addStretch()

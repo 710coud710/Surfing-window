@@ -118,18 +118,25 @@ class ContentWidget(QWidget):
         
         self.filter_button_group = QButtonGroup(self)
         
-        self.radio_all = QRadioButton("Show All Results")
-        self.radio_all.setChecked(True)
-        self.filter_button_group.addButton(self.radio_all)
-        filter_layout.addWidget(self.radio_all)
-        
-        self.radio_invalid = QRadioButton("Show Only Invalid (0xFFFFFFFF)")
+        # Currently only one option available
+        self.radio_invalid = QRadioButton("Show Invalid Files (mfg_data: 0xFFFFFFFF)")
+        self.radio_invalid.setChecked(True)
         self.filter_button_group.addButton(self.radio_invalid)
+
+             # Currently only one option available
+        self.seclect_sample = QRadioButton("Option feature coming soon")
+        # self.seclect_sample.setChecked(True)
+        self.filter_button_group.addButton(self.seclect_sample)
+        self.seclect_sample2 = QRadioButton("Option feature coming soon 2")
+        # self.seclect_sample.setChecked(True)
+        self.filter_button_group.addButton(self.seclect_sample2)
+
         filter_layout.addWidget(self.radio_invalid)
-        
-        self.radio_valid = QRadioButton("Show Only Valid")
-        self.filter_button_group.addButton(self.radio_valid)
-        filter_layout.addWidget(self.radio_valid)
+        filter_layout.addWidget(self.seclect_sample)
+        filter_layout.addWidget(self.seclect_sample2)
+        # ─────────────────────────────────────────────────────────────
+        # TODO: Add more filter options here in future updates
+        # ─────────────────────────────────────────────────────────────
         
         filter_group.setLayout(filter_layout)
         layout.addWidget(filter_group)
@@ -150,19 +157,20 @@ class ContentWidget(QWidget):
         layout.addLayout(process_btn_layout)
         
     def _browse_folder(self):
-        dialog = QFileDialog(self)
-        dialog.setWindowTitle("Select Folder")
-        dialog.setFileMode(QFileDialog.Directory)
-        dialog.setOption(QFileDialog.ShowDirsOnly, True)
-
-        # 🔥 Quan trọng: tắt native dialog
-        dialog.setOption(QFileDialog.DontUseNativeDialog, True)
-
-        # 🔥 Bây giờ resize mới có tác dụng
-        dialog.resize(700, 500)
-
-        if dialog.exec():
-            folder = dialog.selectedFiles()[0]
+        """Open folder browser dialog - using Windows native dialog"""
+        # Get current folder path if exists
+        current_path = self.folder_input.text().strip()
+        start_path = current_path if current_path else ""
+        
+        # Use native Windows dialog (prettier and familiar)
+        folder = QFileDialog.getExistingDirectory(
+            self,
+            "Select Folder Containing Log Files",
+            start_path,
+            QFileDialog.ShowDirsOnly | QFileDialog.DontResolveSymlinks
+        )
+        
+        if folder:
             self.folder_input.setText(folder)
 
 
@@ -173,13 +181,8 @@ class ContentWidget(QWidget):
         if not folder_path:
             return
             
-        # Determine filter type
-        if self.radio_invalid.isChecked():
-            filter_type = "invalid"
-        elif self.radio_valid.isChecked():
-            filter_type = "valid"
-        else:
-            filter_type = "all"
+        # Currently only one filter option: Invalid
+        filter_type = "invalid"
             
         self.process_requested.emit(folder_path, filter_type)
         

@@ -73,7 +73,7 @@ class HeaderWidget(QWidget):
         top_row.addWidget(self.toggle_btn)
         
         # Title
-        title_label = QLabel("Surfing - Pro Program Data Sorting | v1.0.0 Free Trial Version(30 days)")
+        title_label = QLabel("Surfing - Pro Program Data Sorting | v1.0.0 Early Access Version (Beta)")
         title_font = QFont()
         title_font.setPointSize(16)
         title_font.setBold(True)
@@ -85,8 +85,8 @@ class HeaderWidget(QWidget):
         # User icon placeholder
         setting_icon = QLabel()
         setting_pixmap = QPixmap("assets/images/setting.ico")
-        setting_icon.setPixmap(setting_pixmap.scaled(40, 40, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        setting_icon.setFixedSize(40, 40)
+        setting_icon.setPixmap(setting_pixmap.scaled(45, 45, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        setting_icon.setFixedSize(45, 45)
         top_row.addWidget(setting_icon)
         
         main_layout.addLayout(top_row)
