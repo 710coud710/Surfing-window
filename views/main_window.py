@@ -50,6 +50,7 @@ class MainWindow(QMainWindow):
         
         # Header
         self.header = HeaderWidget()
+        self.header.toggle_sidebar.connect(self._toggle_sidebar)
         right_layout.addWidget(self.header)
         
         # Content area with splitter
@@ -152,4 +153,13 @@ class MainWindow(QMainWindow):
         """Switch to results view"""
         self.content_stack.setCurrentWidget(self.result_widget)
         self.sidebar.set_active_menu("Results")
+    
+    def _toggle_sidebar(self):
+        """Toggle sidebar visibility"""
+        if self.sidebar.isVisible():
+            self.sidebar.hide()
+            self.terminal.log_info("Sidebar hidden - More workspace available")
+        else:
+            self.sidebar.show()
+            self.terminal.log_info("Sidebar shown")
 

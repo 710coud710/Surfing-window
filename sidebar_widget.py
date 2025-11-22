@@ -24,7 +24,7 @@ class SidebarWidget(QWidget):
             QWidget {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                            stop:0 #1e3c72, stop:1 #2a5298);
-                color: #2e2b2b;
+                color: white;
             }
             QPushButton {
                 background-color: transparent;
@@ -69,10 +69,10 @@ class SidebarWidget(QWidget):
         logo_layout.setSpacing(10)
         
         # Logo icon
-        logo_icon = QLabel()
-        logo_pixmap = QPixmap("assets/images/surfing2.png")
-        logo_icon.setPixmap(logo_pixmap.scaled(62, 62, Qt.KeepAspectRatio, Qt.SmoothTransformation))
-        logo_icon.setFixedSize(62, 62)
+        logo_icon = QLabel("logo.ico")
+        logo_icon_font = QFont()
+        logo_icon_font.setPointSize(28)
+        logo_icon.setFont(logo_icon_font)
         logo_layout.addWidget(logo_icon)
         
         # Title text
@@ -105,7 +105,14 @@ class SidebarWidget(QWidget):
         
         # Menu section label
         menu_label = QLabel("MENU")
-        menu_label.setStyleSheet("color: #000000; font-size: 18px; font-weight: bold; padding: 5px 20px; letter-spacing: 1px; background: transparent;")
+        menu_label.setStyleSheet("""
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            font-weight: bold;
+            padding: 5px 20px;
+            letter-spacing: 1px;
+            background: transparent;
+        """)
         layout.addWidget(menu_label)
         
         layout.addSpacing(5)
@@ -151,8 +158,8 @@ class SidebarWidget(QWidget):
         version_label = QLabel("Version 1.0.0")
         version_label.setAlignment(Qt.AlignCenter)
         version_label.setStyleSheet("""
-            color: #000000;
-            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
             background: transparent;
         """)
         footer_layout.addWidget(version_label)
@@ -160,8 +167,8 @@ class SidebarWidget(QWidget):
         copyright_label = QLabel("© 2025 Surfing")
         copyright_label.setAlignment(Qt.AlignCenter)
         copyright_label.setStyleSheet("""
-            color: #000000;
-            font-size: 15px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 10px;
             background: transparent;
         """)
         footer_layout.addWidget(copyright_label)
@@ -178,10 +185,8 @@ class SidebarWidget(QWidget):
         for name, btn in self.menu_buttons.items():
             if name == menu_name:
                 btn.setProperty("active", "true")
-                btn.setStyleSheet("color: #ffffff; font-weight: bold;")
             else:
                 btn.setProperty("active", "false")
-                btn.setStyleSheet("color: #2e2b2b; font-weight: normal;")
             btn.style().unpolish(btn)
             btn.style().polish(btn)
 

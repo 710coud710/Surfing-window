@@ -1,23 +1,27 @@
 """
 Header Widget - Top section with progress indicators
 """
-from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QProgressBar, QFrame, QVBoxLayout
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QWidget, QHBoxLayout, QLabel, QProgressBar, QFrame, QVBoxLayout, QPushButton
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QFont, QPixmap
 
 
 class HeaderWidget(QWidget):
     """Header widget with progress bar and statistics"""
     
+    # Signals
+    toggle_sidebar = Signal()  # Signal to toggle sidebar visibility
+    
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.sidebar_visible = True
         self.setup_ui()
         
     def setup_ui(self):
         """Setup the header UI"""
         self.setStyleSheet("""
             QWidget {
-                background-color: white;
+                background-color: #f0f0f0;
             }
             QLabel {
                 color: #2c3e50;
@@ -34,6 +38,23 @@ class HeaderWidget(QWidget):
                                                   stop:0 #1abc9c, stop:1 #16a085);
                 border-radius: 3px;
             }
+            QPushButton#toggleBtn {
+                background-color: transparent;
+                border: 2px solid #bdc3c7;
+                border-radius: 5px;
+                padding: 8px 12px;
+                color: #2c3e50;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton#toggleBtn:hover {
+                background-color: #ecf0f1;
+                border-color: #1abc9c;
+            }
+            QPushButton#toggleBtn:pressed {
+                background-color: #1abc9c;
+                color: white;
+            }
         """)
         
         main_layout = QVBoxLayout(self)
@@ -42,8 +63,17 @@ class HeaderWidget(QWidget):
         # Top row with title and user icon
         top_row = QHBoxLayout()
         
+        # Toggle sidebar button
+        self.toggle_btn = QPushButton("☰")
+        self.toggle_btn.setObjectName("toggleBtn")
+        self.toggle_btn.setToolTip("Toggle Sidebar (Show/Hide)")
+        self.toggle_btn.setCursor(Qt.PointingHandCursor)
+        self.toggle_btn.setFixedSize(40, 40)
+        self.toggle_btn.clicked.connect(self._on_toggle_clicked)
+        top_row.addWidget(self.toggle_btn)
+        
         # Title
-        title_label = QLabel("ADL1 Data Sorting Dashboard")
+        title_label = QLabel("Surfing - Pro Program Data Sorting | v1.0.0 Free Trial Version(30 days)")
         title_font = QFont()
         title_font.setPointSize(16)
         title_font.setBold(True)
@@ -51,13 +81,13 @@ class HeaderWidget(QWidget):
         top_row.addWidget(title_label)
         
         top_row.addStretch()
-        
+
         # User icon placeholder
-        user_icon = QLabel("👤")
-        user_font = QFont()
-        user_font.setPointSize(20)
-        user_icon.setFont(user_font)
-        top_row.addWidget(user_icon)
+        setting_icon = QLabel()
+        setting_pixmap = QPixmap("assets/images/setting.ico")
+        setting_icon.setPixmap(setting_pixmap.scaled(40, 40, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        setting_icon.setFixedSize(40, 40)
+        top_row.addWidget(setting_icon)
         
         main_layout.addLayout(top_row)
         
@@ -110,4 +140,18 @@ class HeaderWidget(QWidget):
     def reset_progress(self):
         """Reset progress to zero"""
         self.update_progress(0, 0, 0.0)
+    
+    def _on_toggle_clicked(self):
+        """Handle toggle button click"""
+        self.sidebar_visible = not self.sidebar_visible
+        # Update button icon
+        if self.sidebar_visible:
+            self.toggle_btn.setText("☰")
+            self.toggle_btn.setToolTip("Hide Sidebar")
+        else:
+            self.toggle_btn.setText("☰")
+            self.toggle_btn.setToolTip("Show Sidebar")
+        
+        # Emit signal
+        self.toggle_sidebar.emit()
 
