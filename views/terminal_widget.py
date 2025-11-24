@@ -62,7 +62,7 @@ class TerminalWidget(QWidget):
         header_layout.addStretch()
         
         # Clear button
-        clear_btn = QPushButton("🗑️ Clear")
+        clear_btn = QPushButton("Clear")
         clear_btn.clicked.connect(self.clear_terminal)
         header_layout.addWidget(clear_btn)
         
